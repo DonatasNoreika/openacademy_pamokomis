@@ -11,8 +11,8 @@
             <field name="report_template" ref="report_session"/>
             <field name="auto_delete" eval="True"/>
             <field name="body_html" type="html">
-                <div>
-                    <p>
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
                         Hello, ${object.instructor_id.name},
                         It's Info of your session ${object.name}.
                         <br/>
