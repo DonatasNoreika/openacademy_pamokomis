@@ -125,3 +125,17 @@ class Session(models.Model):
         for r in self:
             if r.instructor_id and r.instructor_id in r.attendee_ids:
                 raise exceptions.ValidationError("A session's instructor can't be an attendee")
+
+
+    def send_session_report(self):
+        # Find the e-mail template
+        template = self.env.ref('openacademy.openacademy_session_mail_template')
+        # You can also find the e-mail template like this:
+        # template = self.env['ir.model.data'].get_object('send_mail_template_demo', 'example_email_template')
+
+        # Send out the e-mail template to the user
+        self.env['mail.template'].browse(template.id).send_mail(self.id)
+
+    def start_session(self):
+        for record in self:
+            record.status = 'started'

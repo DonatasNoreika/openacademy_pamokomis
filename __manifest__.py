@@ -31,6 +31,7 @@
         'views/res_partner_inherited.xml',
         'reports/session_report.xml',
         'views/session_board.xml',
+        # 'views/mail_templates.xml',
         # 'templates.xml',
     ],
     # only loaded in demonstration mode
