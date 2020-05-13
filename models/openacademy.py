@@ -13,6 +13,11 @@ class Course(models.Model):
     session_ids = fields.One2many(
         'openacademy.session', 'course_id', string="Sessions")
 
+    file = fields.Binary("File", attachment=True)
+    image = fields.Binary("Image", attachment=True)
+
+    document_ids = fields.One2many('openacademy.document', 'project_id', string='Documents')
+
     _sql_constraints = [
         ('name_description_check',
          'CHECK(name != description)',
@@ -22,6 +27,15 @@ class Course(models.Model):
          'UNIQUE(name)',
          "The course title must be unique"),
     ]
+
+class SessionDocument(models.Model):
+    _name = 'openacademy.document'
+
+    name = fields.Char(string='Filename')
+    file = fields.Binary(string=_('File'), attachment=True)
+    comment = fields.Text(string=_('Notes'))
+
+    project_id = fields.Many2one('openacademy.session')
 
 
 class Session(models.Model):
@@ -47,6 +61,13 @@ class Session(models.Model):
                            compute='_get_end_date', inverse='_set_end_date')
     attendees_count = fields.Integer(
         string="Attendees count", compute='_get_attendees_count', store=True)
+
+    status = fields.Selection([
+        ('draft', "Draft"),
+        ('started', "Started"),
+        ('done', "Done"),
+        ('cancelled', "Cancelled"),
+    ], string="Progress", default='draft', translate=True)
 
     @api.depends('seats', 'attendee_ids')
     def _taken_seats(self):
